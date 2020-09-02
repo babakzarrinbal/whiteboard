@@ -41,8 +41,8 @@
   "scope": "/whiteboard/",
   "start_url": "/whiteboard/",
   "display": "standalone",
-  "background_color": "#f72f61",
-  "theme_color": "#f72f61",
+  "background_color": "#ffffff",
+  "theme_color": "#005AFF",
   "permissions": [
     {
       "fileSystem": ["write", "retainEntries", "directory"]

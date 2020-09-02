@@ -1,4 +1,4 @@
-importScripts("/whiteboard/precache-manifest.556327e750144909a48a3c21f3ef3a8c.js", "/whiteboard/workbox-v3.6.3/workbox-sw.js");
+importScripts("/whiteboard/precache-manifest.ffa4d60efe49d041a0b9af8394632c95.js", "/whiteboard/workbox-v3.6.3/workbox-sw.js");
 workbox.setConfig({modulePathPrefix: "/whiteboard/workbox-v3.6.3"});
 // workbox.core.skipWaiting();
 // workbox.core.clientsClaim();
