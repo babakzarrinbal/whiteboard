@@ -1,12 +1,6 @@
-<!--
-dependencies:
-  html2canvas
- -->
 <!-- todos
-  create canves component
-  create pwa app for  whiteboard 
   extend the app for conference 
-  extend for with audio and screen sharing
+  fix ui 
   adding moveable image(drop) and text(on start writing at last mouse/touch position)
  -->
 
