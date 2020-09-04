@@ -1,13 +1,23 @@
 <template>
   <transition name="opacity">
-    <whiteboard />
+    <whiteboard @clear="clearDrawing" @draw="sendDrawing" />
+    <!-- <div v-if="server" class="btn btn-primary position:absolute p-0" style="right:5px;bottom:5px;" @click="createconnection">
+      *
+    </div> -->
+    <!-- <popup v-if="showpopup" :text="popuptext" @answer="popupanswer"/> -->
   </transition>
 </template>
 <script>
 import whiteboard from "./views/whiteBoard";
+import webRTC from "./utils/webRTC";
+import { eventBus } from "./eventBus";
 export default {
   data() {
-    return {};
+    return {
+      showpopup: false,
+      conn: null,
+      server:true
+    };
   },
   components: {
     whiteboard,
@@ -18,14 +28,9 @@ export default {
   //on client alert with answer
   // on connect create client event emitter
   async created() {
-    let lastIceResolver;
-    let getIce = new Promise((r) => (lastIceResolver = r));
-    let pc = new RTCPeerConnection();
-    pc.ondatachannel = (e) =>
-      (e.channel.onmessage = (msg) =>
-        console.log("received message", msg.data));
     let remoteMsg = window.location.hash.slice(1);
     if (remoteMsg) {
+      this.server= false;
       try {
         remoteMsg = JSON.parse(decodeURIComponent(remoteMsg));
       } catch (e) {
@@ -35,58 +40,75 @@ export default {
           0,
           window.location.href.indexOf("#")
         );
-        return;
       }
-    } else {
-      remoteMsg = {};
     }
-    let dataChannel = pc.createDataChannel("dataChannel");
-    dataChannel.onopen = () => {
-      dataChannel.send("test message");
-      dataChannel.onmessage= console.log;
-      console.log("sender opened");
-    };
-    pc.onconnectionstatechange = (...args) => console.log("stat change", args);
-    pc.onicecandidate = (e) => {
-      if (!e.candidate) return lastIceResolver();
-      remoteMsg.candidate = e.candidate;
-    };
-    if (remoteMsg.offer) {
-      pc.setRemoteDescription(remoteMsg.offer)
-        .then(() => pc.createAnswer())
-        .then((answer) => pc.setLocalDescription(answer))
-        .then(async () => {
-          await getIce; 
-          console.log(JSON.stringify(pc.localDescription));
-        })
-        .catch(console.error);
-    } else {
-      pc.createOffer()
-        .then((o) => {
-          pc.setLocalDescription(o);
-        })
-        .catch(console.error);
-      await getIce;
-      remoteMsg.offer = pc.localDescription;
+    this.conn = await webRTC(remoteMsg);
+    this.conn.channel.on("canvasDraw", (m) => {
+      console.log("remoteDraw");
+      eventBus.$emit("canvasDraw", m);
+    });
+    this.conn.channel.on("canvasClear", (m) => {
+      console.log("remoteclear");
+      eventBus.$emit("canvasClear", m);
+    });
+    if (this.conn.offer) {
       console.log(
-        window.location.href +
+        window.location +
           "#" +
-          encodeURIComponent(JSON.stringify(remoteMsg))
+          encodeURIComponent(JSON.stringify(this.conn.offer))
       );
-      let answer = window.prompt("answer");
-      pc.setRemoteDescription(new RTCSessionDescription(JSON.parse(answer)));
-    }
+      let ans = window.prompt(
+        window.location +
+          "#" +
+          encodeURIComponent(JSON.stringify(this.conn.offer))
+      );
+      ans = decodeURIComponent(ans);
+      this.conn.setAnswer(JSON.parse(ans));
+    } else window.alert(encodeURIComponent(JSON.stringify(this.conn.answer)));
   },
   mounted() {
     // removing preloader
-    setTimeout(() => {
+    window.setTimeout(() => {
       let preloader = document.getElementById("preloader");
+      if (!preloader) return;
       preloader.style.transition = ".3s";
       preloader.style.opacity = 0;
       setTimeout(() => preloader.parentNode.removeChild(preloader), 300);
     }, 1000);
   },
-  methods: {},
+  methods: {
+    clearDrawing() {
+      this.conn.channel.emit("canvasClear", {});
+    },
+    sendDrawing(drawing) {
+      this.conn.channel.emit("canvasDraw", drawing);
+    },
+    async createconnection(){
+      this.conn = await webRTC();
+    this.conn.channel.on("canvasDraw", (m) => {
+      eventBus.$emit("canvasDraw", m);
+    });
+    this.conn.channel.on("canvasClear", (m) => {
+      eventBus.$emit("canvasClear", m);
+    });
+    
+      console.log(
+        window.location +
+          "#" +
+          encodeURIComponent(JSON.stringify(this.conn.offer))
+      );
+      let ans = window.prompt(
+        window.location +
+          "#" +
+          encodeURIComponent(JSON.stringify(this.conn.offer))
+      );
+      ans = decodeURIComponent(ans);
+      this.conn.setAnswer(JSON.parse(ans));
+    //  else console.log(encodeURIComponent(JSON.stringify(this.conn.answer)));
+    },
+    popupanswer(){},
+
+  },
   watch: {},
   computed: {},
 };

@@ -1,21 +1,18 @@
 const rtcConf = {
   iceServers: [
-    {
-      urls: "stun:stun.l.google.com:19302"
-    }
-  ]
-}
-export async function createCon(offer) {
+    { urls: "stun:stun.l.google.com:19302" },
+    { urls: "stun:stun.stunprotocol.org" },
+  ],
+};
+export default async function createCon(offer) {
   try {
     let lastIceResolver, connectionResolver;
     let getIce = new Promise((r) => (lastIceResolver = r));
     let result = {
-      offer: "",
-      answer: "",
+      offer: null,
+      answer: null,
       setAnswer: (ans) =>
-      result.pc.setRemoteDescription(
-        new RTCSessionDescription(JSON.parse(ans))
-      ),
+        result.pc.setRemoteDescription(new RTCSessionDescription(ans)),
       pc: new RTCPeerConnection(rtcConf),
       connected: new Promise((r) => (connectionResolver = r)),
       channel: {
@@ -34,23 +31,36 @@ export async function createCon(offer) {
     const msghandler = (msg) => {
       try {
         let jmsg = JSON.parse(msg.data);
-        if (result.__eventListeners[jmsg.event])
+
+        if (jmsg.candidate) {
+          result.pc
+            .addIceCandidate(jmsg.candidate)
+            .catch(console.error);
+        } else if (result.__eventListeners[jmsg.event])
           result.__eventListeners[jmsg.event](jmsg.data);
       } catch (e) {
         console.error(e);
       }
     };
-
+    let offered;
     result.pc.onicecandidate = (e) => {
-      if (!e.candidate) return lastIceResolver();
+      if (!e.candidate) return;
+      if (!offered) {
+        offered = true;
+        return lastIceResolver();
+      }
+      return result.connected.then(() => {
+        result.channel.dataChannel.send(
+          JSON.stringify({ candidate: e.candidate.toJSON() })
+        );
+      });
     };
 
     if (!offer) {
-      let dataChannel = result.pc.createDataChannel("dataChannel");
-      dataChannel.onopen = () => {
+      result.channel.dataChannel = result.pc.createDataChannel("dataChannel");
+      result.channel.dataChannel.onopen = () => {
+        result.channel.dataChannel.onmessage = msghandler;
         connectionResolver();
-        dataChannel.onmessage = msghandler;
-        console.log("sender opened");
       };
 
       result.pc
@@ -60,18 +70,19 @@ export async function createCon(offer) {
         })
         .catch(console.error);
       await getIce;
-      result.offer = JSON.stringify(result.pc.localDescription);
+      result.offer = result.pc.localDescription.toJSON();
     } else {
       result.pc.ondatachannel = (e) => {
         result.channel.dataChannel = e.channel;
-        e.channel.onmessage = msghandler;
+        connectionResolver();
+        result.channel.dataChannel.onmessage = msghandler;
       };
-      result.answerText = await result.pc
+      result.answer = await result.pc
         .setRemoteDescription(offer)
         .then(() => result.pc.createAnswer())
         .then((answer) => result.pc.setLocalDescription(answer))
         .then(() => getIce)
-        .then(() => JSON.stringify(result.pc.localDescription));
+        .then(() => result.pc.localDescription.toJSON());
     }
     return result;
   } catch (e) {

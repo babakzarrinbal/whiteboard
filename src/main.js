@@ -41,10 +41,10 @@ new Vue({
 const requestWakeLock = async () => {
   try {
     window.wakeLock = await window.navigator.wakeLock.request('screen');
-    window.wakeLock.addEventListener('release', () => {
-      console.log('Wake Lock was released');
-    });
-    console.log('Wake Lock is active');
+    // window.wakeLock.addEventListener('release', () => {
+    //   // console.log('Wake Lock was released');
+    // });
+    // console.log('Wake Lock is active');
   } catch (err) {
     console.error(err);
   }
