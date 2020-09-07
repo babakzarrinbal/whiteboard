@@ -123,3 +123,26 @@ img {
 //   box-shadow: 0 0 1px 0px grey;
 //   transition: box-shadow 0.3s;
 // }
+.clickable{
+  user-select: none;
+  cursor: pointer;
+}
+
+.btn-raised{
+  box-shadow: 0px 3px 5px 1px grey;
+  &:hover{
+    box-shadow: 0px 5px 8px 3px grey;
+    transform: translateY(-1px);
+  }
+  &:active{
+    transform: translateY(1px);
+    box-shadow: none;
+  }
+  &.active{
+    transform: translateY(1px);
+    box-shadow: none;
+    background-color:#8080808c
+
+  }
+  transition:0.1s;
+}

@@ -29,26 +29,37 @@
     </div>
     <div
       class="settings"
-      style="background-color:#0000ff75;width:50px;height:50px;border-radius:50%;position:absolute;left:10px;bottom:10px;display:flex;cursor:pointer;user-select:none;justify-content:center;align-items:center;"
+      style="border:1px solid black;padding:5px;background-color:rgb(63 117 255);width:40px;height:40px;border-radius:50%;position:absolute;left:10px;bottom:10px;display:flex;cursor:pointer;user-select:none;justify-content:center;align-items:center;"
       v-if="!capturing"
       @click="settingVisible = !settingVisible"
-    >...</div>
+      :style="'background-color:'+strokeStyle"
+    >
+      <img src="img/icon/setting.png" alt />
+    </div>
     <div
       v-if="!capturing && settingVisible"
       class="controls"
       style="position:absolute;left:70px;bottom:0px;display:flex;flex-direction:column;justify-content:center;align-items:center"
     >
-      <div class="tips" style="display:flex;align-items:center;justify-content:center;">
-        <input
-          type="color"
-          v-model="strokeStyle"
-          style="min-width:5px;min-height:5px;padding:0;border-radius:50%;overflow:hidden;border:1px solid black;margin-right:5px;"
-          :style="{width:lineWidth+'px',height:lineWidth+'px'}"
-          :disabled="eraser"
-        />
-        <div class="eraser">
-          <input type="checkbox" v-model="eraser" id="eraser" />
-          <label for="eraser" style="margin:0;">Eraser</label>
+      <div
+        class="tips"
+        style="width:100%;display:flex;flex-direction:row-reverse;justify-content:space-between;"
+      >
+        <div>
+          <input
+            type="color"
+            v-model="strokeStyle"
+            style="min-width:5px;min-height:5px;padding:0;border-radius:50%;overflow:hidden;border:1px solid black;margin-right:5px;"
+            :style="{width:lineWidth+'px',height:lineWidth+'px'}"
+            :disabled="eraser"
+          />
+        </div>
+        <div class="eraser" style="display:flex" @click="eraser=!eraser">
+          <div class="button clickable btn-raised" :class="{'active':eraser}" style="transition:0s;margin-top:auto;width:30px;height:30px">
+            <img src="img/icon/eraser.svg" />
+          </div>
+          <!-- <input type="checkbox" v-model="eraser" id="eraser" />
+          <label for="eraser" style="margin:0;">Eraser</label>-->
         </div>
       </div>
       <!-- <Sketch v-model="strokeStyle"/> -->
@@ -64,16 +75,36 @@
     <div
       v-if="!capturing && settingVisible"
       class="controls"
-      style="position:absolute;left:10px;bottom:70px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start"
+      style="position:absolute;left:10px;bottom:50px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start"
     >
-      <input type="button" @click="clearCanvas(false)" value="clear" style="margin-bottom:5px;" />
-      <input type="button" @click="save" value="save" style="margin-bottom:5px;" />
-      <input type="button" @click="fullscreen" value="fullscreen" style="margin-bottom:5px;" />
+      <div class="button clickable btn-raised" style>
+        <img src="img/icon/clean.svg" @click="clearCanvas(false)" class alt />
+      </div>
+      <div class="button clickable btn-raised" style="padding:8px;">
+        <img src="img/icon/save.svg" @click="save" class alt />
+      </div>
+      <div class="button clickable btn-raised" style="padding:8px;">
+        <img :src="'img/icon/fullscreen-'+(isFullscreen?'exit':'enter')+'.svg'" @click="fullscreen" />
+      </div>
     </div>
   </div>
 </template>
 
 <style >
+.button {
+  margin-bottom: 5px;
+  background-color: white;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  padding: 5px;
+  border: 1px solid #848484;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 html {
   width: 100%;
   height: 100%;
@@ -103,7 +134,7 @@ input[type="color"]::-webkit-color-swatch {
 </style>
 <script>
 import h2c from "html2canvas/dist/html2canvas";
-import {eventBus} from "../eventBus";
+import { eventBus } from "../eventBus";
 // import settingsVue from '../components/settings.vue';
 // import {Sketch} from "vue-color";
 window.h2c = h2c;
@@ -145,8 +176,8 @@ export default {
     this.canvas.ontouchstop = this.stopDraw;
     this.canvas.ontouchmove = this.drawMouse;
 
-    eventBus.$on('canvasDraw',this.drawRemoteLines);
-    eventBus.$on('canvasClear',()=>this.clearCanvas(true));
+    eventBus.$on("canvasDraw", this.drawRemoteLines);
+    eventBus.$on("canvasClear", () => this.clearCanvas(true));
   },
   methods: {
     startDraw(e) {
@@ -244,9 +275,9 @@ export default {
         };
       }
     },
-    clearCanvas(remote=false) {
+    clearCanvas(remote = false) {
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      if(!remote)this.$emit("clear");
+      if (!remote) this.$emit("clear");
     },
     async save() {
       this.capturing = true;
