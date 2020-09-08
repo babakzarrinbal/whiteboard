@@ -1,7 +1,7 @@
 self.__precacheManifest = [
   {
-    "revision": "85a5675b8b7737090914d26418d8175d",
-    "url": "/whiteboard/img/ttsicons/next-w.svg"
+    "revision": "20ca233e48ad5b5a127f6f1d86a4e4ef",
+    "url": "/whiteboard/img/ttsicons/minus.svg"
   },
   {
     "revision": "536ef82528266ef7716cc76f13c960e4",
@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "/whiteboard/js/chunk-vendors.809a04da.js"
   },
   {
-    "revision": "3cea2252d24b02101fbf4af9a5a5a66c",
+    "revision": "5a1f64853c3798a82cc5944f01ba7a36",
     "url": "/whiteboard/index.html"
   },
   {
@@ -40,12 +40,12 @@ self.__precacheManifest = [
     "url": "/whiteboard/img/logos/msapplication-icon-144x144.png"
   },
   {
-    "revision": "0bc34d58789b9ef73bc0b085f99a17ac",
-    "url": "/whiteboard/img/logos/apple-touch-icon-152x152.png"
-  },
-  {
     "revision": "958e6582432ebb6b394082384d4592a9",
     "url": "/whiteboard/img/logos/apple-touch-icon-180x180.png"
+  },
+  {
+    "revision": "0bc34d58789b9ef73bc0b085f99a17ac",
+    "url": "/whiteboard/img/logos/apple-touch-icon-152x152.png"
   },
   {
     "revision": "bca7abe5cc4272c0e48ca32e81a7def1",
@@ -56,12 +56,28 @@ self.__precacheManifest = [
     "url": "/whiteboard/robots.txt"
   },
   {
-    "revision": "e3eca74d0d77d7299725c27949c59ebd",
-    "url": "/whiteboard/img/loaders/rings.svg"
+    "revision": "72d4a6cd86f52d8d64c4eefb089542cb",
+    "url": "/whiteboard/img/ttsicons/shield.svg"
+  },
+  {
+    "revision": "50acadf632bc9506653499fff9bb30ac",
+    "url": "/whiteboard/img/ttsicons/settings.svg"
+  },
+  {
+    "revision": "ce554f9aa15080bcf5d30af0549b0779",
+    "url": "/whiteboard/img/ttsicons/refresh.svg"
+  },
+  {
+    "revision": "8181039b61cfc565659fa059c039e706",
+    "url": "/whiteboard/img/ttsicons/plus.svg"
   },
   {
     "revision": "d8f8be8601d46e34d280ea4e44a5be1d",
     "url": "/whiteboard/img/loaders/puff.svg"
+  },
+  {
+    "revision": "e3eca74d0d77d7299725c27949c59ebd",
+    "url": "/whiteboard/img/loaders/rings.svg"
   },
   {
     "revision": "b1caa7c7f687a8af5b1d5e7912e289dc",
@@ -84,16 +100,12 @@ self.__precacheManifest = [
     "url": "/whiteboard/img/logos/favicon-16x16.png"
   },
   {
-    "revision": "94c7a2fd405453d906fa785a5a87fbcf",
-    "url": "/whiteboard/img/logos/safari-pinned-tab.svg"
-  },
-  {
     "revision": "a5c98fcd4b2e529fa43efb280f39dedc",
     "url": "/whiteboard/img/logos/notification-64x64.png"
   },
   {
-    "revision": "20ca233e48ad5b5a127f6f1d86a4e4ef",
-    "url": "/whiteboard/img/ttsicons/minus.svg"
+    "revision": "94c7a2fd405453d906fa785a5a87fbcf",
+    "url": "/whiteboard/img/logos/safari-pinned-tab.svg"
   },
   {
     "revision": "f7caff4f185c623ba45c02ab832f9c1f",
@@ -104,12 +116,12 @@ self.__precacheManifest = [
     "url": "/whiteboard/img/ttsicons/list.svg"
   },
   {
-    "revision": "3a1311d5e71f7d0d9cf75005f1992426",
-    "url": "/whiteboard/img/ttsicons/next.svg"
+    "revision": "93f0d76b84c5cf8699af",
+    "url": "/whiteboard/js/app.d86f20d5.js"
   },
   {
-    "revision": "45155fb4552e656c73d4",
-    "url": "/whiteboard/js/app.b412aa41.js"
+    "revision": "85a5675b8b7737090914d26418d8175d",
+    "url": "/whiteboard/img/ttsicons/next-w.svg"
   },
   {
     "revision": "2d862f5aaa34fed9e533fbfc84d4080e",
@@ -120,76 +132,80 @@ self.__precacheManifest = [
     "url": "/whiteboard/img/ttsicons/pause.svg"
   },
   {
+    "revision": "3a1311d5e71f7d0d9cf75005f1992426",
+    "url": "/whiteboard/img/ttsicons/next.svg"
+  },
+  {
     "revision": "6ee7698493609851c684cc8b560084a7",
     "url": "/whiteboard/img/ttsicons/play-full.svg"
-  },
-  {
-    "revision": "eb811774ab3b6bec73673e8ec3c24105",
-    "url": "/whiteboard/img/ttsicons/play-w.svg"
-  },
-  {
-    "revision": "8181039b61cfc565659fa059c039e706",
-    "url": "/whiteboard/img/ttsicons/plus.svg"
   },
   {
     "revision": "7db92e62bee29459989694fb4526bc16",
     "url": "/whiteboard/img/ttsicons/play.svg"
   },
   {
-    "revision": "ce554f9aa15080bcf5d30af0549b0779",
-    "url": "/whiteboard/img/ttsicons/refresh.svg"
+    "revision": "eb811774ab3b6bec73673e8ec3c24105",
+    "url": "/whiteboard/img/ttsicons/play-w.svg"
   },
   {
-    "revision": "50acadf632bc9506653499fff9bb30ac",
-    "url": "/whiteboard/img/ttsicons/settings.svg"
+    "revision": "4a19317a1957d4bb21b4ecd9ca271393",
+    "url": "/whiteboard/img/icon/add-user.svg"
   },
   {
-    "revision": "72d4a6cd86f52d8d64c4eefb089542cb",
-    "url": "/whiteboard/img/ttsicons/shield.svg"
-  },
-  {
-    "revision": "cc41eda321760ae4c41459611b297ca7",
-    "url": "/whiteboard/favicon.png"
-  },
-  {
-    "revision": "d5a09bc5ab6f528361c55fcb29dd87aa",
-    "url": "/whiteboard/img/icon/save.svg"
-  },
-  {
-    "revision": "3e7f8afa35e80c2ec94e5d93bbf47b3a",
-    "url": "/whiteboard/img/icon/see.png"
+    "revision": "54d23b932ecaf491f5db25b96572fb8c",
+    "url": "/whiteboard/img/icon/text.svg"
   },
   {
     "revision": "753c1348db15415a17babefca67d7916",
     "url": "/whiteboard/img/loaders/drawing.gif"
   },
   {
-    "revision": "39153b06929a746eee884dd665ab0dc8",
-    "url": "/whiteboard/img/icon/setting.png"
-  },
-  {
-    "revision": "8f3082d40ef4c4f2e90c48c4f944d8af",
-    "url": "/whiteboard/db/movies/list/lastupdated/1.json.bak2"
-  },
-  {
-    "revision": "af92872761bf5eeb006302126b2a063a",
-    "url": "/whiteboard/img/icon/fullscreen-enter.svg"
-  },
-  {
-    "revision": "7e7fd524bff2b430af8a924bae7b6fad",
-    "url": "/whiteboard/img/icon/list.png"
-  },
-  {
-    "revision": "01711fa464361d1f2c5994e387288432",
-    "url": "/whiteboard/img/icon/notsee.png"
+    "revision": "cc41eda321760ae4c41459611b297ca7",
+    "url": "/whiteboard/favicon.png"
   },
   {
     "revision": "8d55ed777e25b082f9feab7708a8bbe7",
     "url": "/whiteboard/img/icon/fullscreen-exit.svg"
   },
   {
+    "revision": "01711fa464361d1f2c5994e387288432",
+    "url": "/whiteboard/img/icon/notsee.png"
+  },
+  {
+    "revision": "3e7f8afa35e80c2ec94e5d93bbf47b3a",
+    "url": "/whiteboard/img/icon/see.png"
+  },
+  {
+    "revision": "7e7fd524bff2b430af8a924bae7b6fad",
+    "url": "/whiteboard/img/icon/list.png"
+  },
+  {
+    "revision": "39153b06929a746eee884dd665ab0dc8",
+    "url": "/whiteboard/img/icon/setting.png"
+  },
+  {
+    "revision": "d5a09bc5ab6f528361c55fcb29dd87aa",
+    "url": "/whiteboard/img/icon/save.svg"
+  },
+  {
+    "revision": "8f3082d40ef4c4f2e90c48c4f944d8af",
+    "url": "/whiteboard/db/movies/list/lastupdated/1.json.bak2"
+  },
+  {
+    "revision": "7de5e5f7d3fbd734c8d9328cc6806365",
+    "url": "/whiteboard/img/icon/default-user.svg"
+  },
+  {
     "revision": "990d00a9139f560eb773e2fe0819e136",
     "url": "/whiteboard/img/icon/eraser.svg"
+  },
+  {
+    "revision": "aa0b5ae2488f49c233cd56f727c64e15",
+    "url": "/whiteboard/img/icon/draw.svg"
+  },
+  {
+    "revision": "af92872761bf5eeb006302126b2a063a",
+    "url": "/whiteboard/img/icon/fullscreen-enter.svg"
   },
   {
     "revision": "da8857c4b5ff5228eda7b8bad5514750",
@@ -198,6 +214,10 @@ self.__precacheManifest = [
   {
     "revision": "f30213fcbd218e3365350c958753ead7",
     "url": "/whiteboard/img/icon/clean.svg"
+  },
+  {
+    "revision": "07e14fc57877625d8ce872cf15eef912",
+    "url": "/whiteboard/img/icon/add-group.png"
   },
   {
     "revision": "32b7ab1d4cfffb87627042b923affa1a",
@@ -212,7 +232,7 @@ self.__precacheManifest = [
     "url": "/whiteboard/css/chunk-vendors.6acb9ff2.css"
   },
   {
-    "revision": "45155fb4552e656c73d4",
-    "url": "/whiteboard/css/app.c1127cad.css"
+    "revision": "93f0d76b84c5cf8699af",
+    "url": "/whiteboard/css/app.af5360c1.css"
   }
 ];

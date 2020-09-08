@@ -1,26 +1,32 @@
 <template>
-  <transition name="opacity">
-    <whiteboard @clear="clearDrawing" @draw="sendDrawing" />
-    <!-- <div v-if="server" class="btn btn-primary position:absolute p-0" style="right:5px;bottom:5px;" @click="createconnection">
-      *
-    </div> -->
-    <!-- <popup v-if="showpopup" :text="popuptext" @answer="popupanswer"/> -->
-  </transition>
+  <transition-group name="opacity">
+    <whiteboard
+      :style="showpopup?'filter:blur(4px)':''"
+      @clear="clearDrawing"
+      @draw="sendDrawing"
+      @show-group="showpopup = true"
+      key="1"
+    />
+    <popup v-if="showpopup" @dismiss="showpopup = false" key="2" />
+  </transition-group>
 </template>
 <script>
 import whiteboard from "./views/whiteBoard";
+import popup from "./components/popup";
 import webRTC from "./utils/webRTC";
 import { eventBus } from "./eventBus";
 export default {
   data() {
     return {
+      console: window.console,
       showpopup: false,
       conn: null,
-      server:true
+      server: true,
     };
   },
   components: {
     whiteboard,
+    popup,
   },
   //create offer link > return offer link , callback to create connection, close connection
   // callback with answer > event emitter for listen and emit
@@ -28,9 +34,10 @@ export default {
   //on client alert with answer
   // on connect create client event emitter
   async created() {
+    return;
     let remoteMsg = window.location.hash.slice(1);
     if (remoteMsg) {
-      this.server= false;
+      this.server = false;
       try {
         remoteMsg = JSON.parse(decodeURIComponent(remoteMsg));
       } catch (e) {
@@ -43,28 +50,21 @@ export default {
       }
     }
     this.conn = await webRTC(remoteMsg);
-    this.conn.channel.on("canvasDraw", (m) => {
-      console.log("remoteDraw");
-      eventBus.$emit("canvasDraw", m);
-    });
-    this.conn.channel.on("canvasClear", (m) => {
-      console.log("remoteclear");
-      eventBus.$emit("canvasClear", m);
-    });
+    this.conn.channel.on("canvasDraw", (m) => eventBus.$emit("canvasDraw", m));
+    this.conn.channel.on("canvasClear", (m) =>
+      eventBus.$emit("canvasClear", m)
+    );
     if (this.conn.offer) {
       console.log(
         window.location +
           "#" +
           encodeURIComponent(JSON.stringify(this.conn.offer))
       );
-      let ans = window.prompt(
-        window.location +
-          "#" +
-          encodeURIComponent(JSON.stringify(this.conn.offer))
-      );
+      let ans = window.prompt('Answer');
+      if(!ans) return;
       ans = decodeURIComponent(ans);
       this.conn.setAnswer(JSON.parse(ans));
-    } else window.alert(encodeURIComponent(JSON.stringify(this.conn.answer)));
+    } else console.log(encodeURIComponent(JSON.stringify(this.conn.answer)));
   },
   mounted() {
     // removing preloader
@@ -83,15 +83,15 @@ export default {
     sendDrawing(drawing) {
       this.conn.channel.emit("canvasDraw", drawing);
     },
-    async createconnection(){
+    async createconnection() {
       this.conn = await webRTC();
-    this.conn.channel.on("canvasDraw", (m) => {
-      eventBus.$emit("canvasDraw", m);
-    });
-    this.conn.channel.on("canvasClear", (m) => {
-      eventBus.$emit("canvasClear", m);
-    });
-    
+      this.conn.channel.on("canvasDraw", (m) => {
+        eventBus.$emit("canvasDraw", m);
+      });
+      this.conn.channel.on("canvasClear", (m) => {
+        eventBus.$emit("canvasClear", m);
+      });
+
       console.log(
         window.location +
           "#" +
@@ -104,10 +104,9 @@ export default {
       );
       ans = decodeURIComponent(ans);
       this.conn.setAnswer(JSON.parse(ans));
-    //  else console.log(encodeURIComponent(JSON.stringify(this.conn.answer)));
+      //  else console.log(encodeURIComponent(JSON.stringify(this.conn.answer)));
     },
-    popupanswer(){},
-
+    popupanswer() {},
   },
   watch: {},
   computed: {},

@@ -1,4 +1,9 @@
 <!-- todos
+  group draw
+  save/restore with canvas resize
+  group canvas aspect ratio
+  on dbclick or click hold add text (or add menu)
+  adding text abilities
   fix ui 
   adding moveable image(drop) and text(on start writing at last mouse/touch position)
  -->
@@ -6,7 +11,7 @@
 <template>
   <div
     ref="container"
-    style="position:relative;width:100%;height:100%;background-color:white;overflow:hidden;"
+    style="position:relative;width:100%;height:100%;background-color:white;overflow:hidden;transition:0.3s"
   >
     <!-- <div
       contenteditable="true"
@@ -23,18 +28,19 @@
         :height="can_height"
         style="position: relative;"
         :style="eraser?'cursor: no-drop;':''"
+        @dblclick="console.log('test')"
       >
         <strong>[Your browser can not show this example.]</strong>
       </canvas>
     </div>
     <div
       class="settings"
-      style="border:1px solid black;padding:5px;background-color:rgb(63 117 255);width:40px;height:40px;border-radius:50%;position:absolute;left:10px;bottom:10px;display:flex;cursor:pointer;user-select:none;justify-content:center;align-items:center;"
+      style="border:1px solid black;padding:8px;background-color:rgb(63 117 255);width:40px;height:40px;border-radius:50%;position:absolute;left:10px;bottom:10px;display:flex;cursor:pointer;user-select:none;justify-content:center;align-items:center;"
       v-if="!capturing"
       @click="settingVisible = !settingVisible"
       :style="'background-color:'+strokeStyle"
     >
-      <img src="img/icon/setting.png" alt />
+      <img src="img/icon/draw.svg" at />
     </div>
     <div
       v-if="!capturing && settingVisible"
@@ -55,7 +61,11 @@
           />
         </div>
         <div class="eraser" style="display:flex" @click="eraser=!eraser">
-          <div class="button clickable btn-raised" :class="{'active':eraser}" style="transition:0s;margin-top:auto;width:30px;height:30px">
+          <div
+            class="button clickable btn-raised"
+            :class="{'active':eraser}"
+            style="transition:0s;margin-top:auto;width:30px;height:30px"
+          >
             <img src="img/icon/eraser.svg" />
           </div>
           <!-- <input type="checkbox" v-model="eraser" id="eraser" />
@@ -77,6 +87,9 @@
       class="controls"
       style="position:absolute;left:10px;bottom:50px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start"
     >
+      <div class="button clickable btn-raised" @click="$emit('show-group')" style="padding:8px;">
+        <img src="img/icon/add-group.png" class alt />
+      </div>
       <div class="button clickable btn-raised" style>
         <img src="img/icon/clean.svg" @click="clearCanvas(false)" class alt />
       </div>
@@ -149,37 +162,36 @@ export default {
       can_width: 400,
       can_height: 200,
       rangeVal: 10,
-      // lineWidth: 20,
+      // rangeVal: 40,
+      // strokeStyle: "#005aff5c",
       strokeStyle: "#005AFF",
+
       backColor: "rgb(255,255,255)",
       eraser: false,
       capturing: false,
+      console: window.console,
     };
   },
   // components:{Sketch},
   mounted() {
     this.canvas = this.$refs.cbook;
-    this.can_height = window.screen.height;
-    this.can_width = window.screen.width;
     this.context = this.canvas.getContext("2d");
-    this.context.globalCompositeOperation = "destination-atop";
-    this.context.lineWidth = this.lineWidth;
-    this.context.strokeStyle = this.eraser
-      ? this.backColor
-      : this.strokeStyle.hex8 || this.strokeStyle;
-    this.context.lineCap = "round";
-    this.context.beginPath();
-
-    this.canvas.onmousedown = this.startDraw;
-    this.canvas.onmouseup = this.stopDraw;
-    this.canvas.ontouchstart = this.startDraw;
-    this.canvas.ontouchstop = this.stopDraw;
-    this.canvas.ontouchmove = this.drawMouse;
-
+    this.initDrawing();
     eventBus.$on("canvasDraw", this.drawRemoteLines);
     eventBus.$on("canvasClear", () => this.clearCanvas(true));
   },
   methods: {
+    initDrawing() {
+      this.can_height = window.screen.height;
+      this.can_width = window.screen.width;
+      this.context.beginPath();
+
+      this.canvas.onmousedown = this.startDraw;
+      this.canvas.onmouseup = this.stopDraw;
+      this.canvas.ontouchstart = this.startDraw;
+      this.canvas.ontouchstop = this.stopDraw;
+      this.canvas.ontouchmove = this.drawMouse;
+    },
     startDraw(e) {
       if (e.touches) {
         // Touch event
@@ -235,6 +247,8 @@ export default {
         ? this.backColor
         : this.strokeStyle.hex8 || this.strokeStyle;
       this.context.lineCap = "round";
+      if (this.strokeStyle.a && this.strokeStyle.a < 1)
+        this.context.globalCompositeOperation = "xor";
       this.context.stroke();
       this.$emit("draw", {
         type: "drawLine",
