@@ -63,7 +63,7 @@
           >
             <img
               style="width:25px;height:25px;background-color:#ffffff8c;"
-              src="/img/icon/copy.svg"
+              src="img/icon/copy.svg"
               alt
             />
           </div>
@@ -75,7 +75,7 @@
           >
             <img
               style="width:25px;height:25px;background-color:#ffffff8c;"
-              src="/img/icon/share.svg"
+              src="img/icon/share.svg"
               alt
             />
           </div>
@@ -92,7 +92,7 @@
           >
             <img
               style="width:25px;height:25px;background-color:#ffffff8c;"
-              src="/img/icon/copy.svg"
+              src="img/icon/copy.svg"
               alt
             />
           </div>
@@ -104,7 +104,7 @@
           >
             <img
               style="width:25px;height:25px;background-color:#ffffff8c;"
-              src="/img/icon/share.svg"
+              src="img/icon/share.svg"
               alt
             />
           </div>
