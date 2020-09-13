@@ -37,11 +37,14 @@
       <div class="detail ml-2">ADD New User</div>
     </li>
     <li
-      class="list-group-item list-group-item-action d-flex flex-column "
+      class="list-group-item list-group-item-action d-flex flex-column"
       v-for="(u,i) in $root.group"
       :key="i"
     >
-      <div class="userinfo d-flex w-100 align-items-center clickable" @click="u.showdetail = !u.showdetail">
+      <div
+        class="userinfo d-flex w-100 align-items-center clickable"
+        @click="u.showdetail = !u.showdetail"
+      >
         <div
           class="pimg flex-center p-1"
           style="height:40px;width:40px;border:1px solid gray; border-radius:50%;overflow-hidden"
@@ -188,32 +191,36 @@ export default {
     },
     async addUser() {
       let connection = await webRTC();
-      connection.channel.on("canvasDraw", (m) =>
-        eventBus.$emit("canvasDraw", m)
-      );
-      connection.channel.on("canvasClear", (m) =>
-        eventBus.$emit("canvasClear", m)
-      );
       let id =
         this.$root.group.reduce((cu, c) => (cu > c.id ? cu : c.id), 0) + 1;
+      connection.channel.on("canvasDraw", (m) => {
+        for (let gu of this.$root.group.filter((g) => g.id != id))
+          gu.connection.emit("canvasDraw", m);
+        eventBus.$emit("canvasDraw", m);
+      });
+      connection.channel.on("canvasClear", (m) =>{
+        for (let gu of this.$root.group.filter((g) => g.id != id))
+          gu.connection.emit("canvasClear", m);
+        eventBus.$emit("canvasClear", m);
+      });
       let user = {
         connection,
         id,
         answered: false,
         profile: {},
         answer: "",
-        showdetail:false,
+        showdetail: false,
         offerLink:
           window.location +
           "#" +
           encodeURIComponent(JSON.stringify({ offer: connection.offer, id })),
       };
       this.$root.group.push(user);
-      console.log(connection.offer);
-      console.log(user.offerLink);
+      // console.log(connection.offer);
+      // console.log(user.offerLink);
     },
     async confirmUser(user) {
-      try{
+      try {
         let ans;
         try {
           ans = JSON.parse(window.decodeURIComponent(user.answer));
@@ -226,9 +233,8 @@ export default {
         usr.connection.setAnswer(ans.answer);
         await usr.connection.connected;
         usr.answered = true;
-
-      }catch(e){
-        window.alert(e.toString())
+      } catch (e) {
+        window.alert(e.toString());
       }
     },
     share(text) {

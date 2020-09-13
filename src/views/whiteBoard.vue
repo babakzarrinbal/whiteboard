@@ -28,8 +28,8 @@
         :height="can_height"
         style="position: relative;"
         :style="eraser?'cursor: no-drop;':''"
-        @dblclick="console.log('test')"
       >
+        <!-- @dblclick="console.log('test')" -->
         <strong>[Your browser can not show this example.]</strong>
       </canvas>
     </div>
@@ -330,9 +330,9 @@ export default {
       deep: true,
       handler() {},
     },
-    strokeStyle(val) {
-      console.log(val);
-    },
+    // strokeStyle(val) {
+    //   // console.log(val);
+    // },
   },
 };
 </script>

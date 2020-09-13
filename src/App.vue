@@ -49,13 +49,21 @@ export default {
       }
     } else return;
     let conn = await webRTC(remoteMsg.offer);
-    conn.channel.on("canvasDraw", (m) => eventBus.$emit("canvasDraw", m));
-    conn.channel.on("canvasClear", (m) => eventBus.$emit("canvasClear", m));
+    conn.channel.on("canvasDraw", (m) => {
+      for(let gu of this.$root.group.filter(g=>g.id!=1))
+        gu.connection.emit('canvasDraw',m)
+      eventBus.$emit("canvasDraw", m)
+      });
+    conn.channel.on("canvasClear", (m) => {
+      for(let gu of this.$root.group.filter(g=>g.id!=1))
+        gu.connection.emit('canvasClear',m)
+      eventBus.$emit("canvasClear", m)
+      });
     let answer= encodeURIComponent(
       JSON.stringify({ answer: conn.answer, id: remoteMsg.id })
       )
-    console.log(conn.answer);
-    console.log(answer);
+    // console.log(conn.answer);
+    // console.log(answer);
     this.$root.group.push({
       connection: conn,
       id: 1,
