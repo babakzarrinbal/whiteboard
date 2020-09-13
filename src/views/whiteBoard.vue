@@ -11,7 +11,7 @@
 <template>
   <div
     ref="container"
-    style="position:relative;width:100%;height:100%;background-color:white;overflow:hidden;transition:0.3s"
+    style="position:relative;width:100%;height:100%;background-color:white;overflow:hidden;"
   >
     <!-- <div
       contenteditable="true"

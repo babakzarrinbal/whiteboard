@@ -1,7 +1,7 @@
 self.__precacheManifest = [
   {
-    "revision": "20ca233e48ad5b5a127f6f1d86a4e4ef",
-    "url": "/whiteboard/img/ttsicons/minus.svg"
+    "revision": "783c7836eb439161b1f9fa84430c7bf9",
+    "url": "/whiteboard/img/ttsicons/list.svg"
   },
   {
     "revision": "536ef82528266ef7716cc76f13c960e4",
@@ -12,11 +12,11 @@ self.__precacheManifest = [
     "url": "/whiteboard/img/logos/notification-512x512.png"
   },
   {
-    "revision": "0abc17c7868238df1f40",
-    "url": "/whiteboard/js/chunk-vendors.809a04da.js"
+    "revision": "0093a061c609788b2f87",
+    "url": "/whiteboard/js/chunk-vendors.ad392f99.js"
   },
   {
-    "revision": "5a1f64853c3798a82cc5944f01ba7a36",
+    "revision": "f3afef3a192d8c4eae27531c7383976a",
     "url": "/whiteboard/index.html"
   },
   {
@@ -68,8 +68,16 @@ self.__precacheManifest = [
     "url": "/whiteboard/img/ttsicons/refresh.svg"
   },
   {
-    "revision": "8181039b61cfc565659fa059c039e706",
-    "url": "/whiteboard/img/ttsicons/plus.svg"
+    "revision": "7db92e62bee29459989694fb4526bc16",
+    "url": "/whiteboard/img/ttsicons/play.svg"
+  },
+  {
+    "revision": "eb811774ab3b6bec73673e8ec3c24105",
+    "url": "/whiteboard/img/ttsicons/play-w.svg"
+  },
+  {
+    "revision": "6ee7698493609851c684cc8b560084a7",
+    "url": "/whiteboard/img/ttsicons/play-full.svg"
   },
   {
     "revision": "d8f8be8601d46e34d280ea4e44a5be1d",
@@ -92,12 +100,12 @@ self.__precacheManifest = [
     "url": "/whiteboard/img/logos/apple-touch-icon-76x76.png"
   },
   {
-    "revision": "2e32412fd9f6785e1be439a95e01dc8d",
-    "url": "/whiteboard/img/logos/favicon-32x32.png"
-  },
-  {
     "revision": "7624aa7057f6ba327d9d11894cefa605",
     "url": "/whiteboard/img/logos/favicon-16x16.png"
+  },
+  {
+    "revision": "2e32412fd9f6785e1be439a95e01dc8d",
+    "url": "/whiteboard/img/logos/favicon-32x32.png"
   },
   {
     "revision": "a5c98fcd4b2e529fa43efb280f39dedc",
@@ -112,16 +120,20 @@ self.__precacheManifest = [
     "url": "/whiteboard/img/ttsicons/bookmark.svg"
   },
   {
-    "revision": "783c7836eb439161b1f9fa84430c7bf9",
-    "url": "/whiteboard/img/ttsicons/list.svg"
+    "revision": "7b92889a49bb83d3edd5",
+    "url": "/whiteboard/js/app.274ae0fa.js"
   },
   {
-    "revision": "93f0d76b84c5cf8699af",
-    "url": "/whiteboard/js/app.d86f20d5.js"
+    "revision": "20ca233e48ad5b5a127f6f1d86a4e4ef",
+    "url": "/whiteboard/img/ttsicons/minus.svg"
   },
   {
     "revision": "85a5675b8b7737090914d26418d8175d",
     "url": "/whiteboard/img/ttsicons/next-w.svg"
+  },
+  {
+    "revision": "3a1311d5e71f7d0d9cf75005f1992426",
+    "url": "/whiteboard/img/ttsicons/next.svg"
   },
   {
     "revision": "2d862f5aaa34fed9e533fbfc84d4080e",
@@ -132,24 +144,12 @@ self.__precacheManifest = [
     "url": "/whiteboard/img/ttsicons/pause.svg"
   },
   {
-    "revision": "3a1311d5e71f7d0d9cf75005f1992426",
-    "url": "/whiteboard/img/ttsicons/next.svg"
+    "revision": "8181039b61cfc565659fa059c039e706",
+    "url": "/whiteboard/img/ttsicons/plus.svg"
   },
   {
-    "revision": "6ee7698493609851c684cc8b560084a7",
-    "url": "/whiteboard/img/ttsicons/play-full.svg"
-  },
-  {
-    "revision": "7db92e62bee29459989694fb4526bc16",
-    "url": "/whiteboard/img/ttsicons/play.svg"
-  },
-  {
-    "revision": "eb811774ab3b6bec73673e8ec3c24105",
-    "url": "/whiteboard/img/ttsicons/play-w.svg"
-  },
-  {
-    "revision": "4a19317a1957d4bb21b4ecd9ca271393",
-    "url": "/whiteboard/img/icon/add-user.svg"
+    "revision": "36e2112aa7bd47bc0454da1cd2b5a5cd",
+    "url": "/whiteboard/img/icon/copy.svg"
   },
   {
     "revision": "54d23b932ecaf491f5db25b96572fb8c",
@@ -160,12 +160,20 @@ self.__precacheManifest = [
     "url": "/whiteboard/img/loaders/drawing.gif"
   },
   {
-    "revision": "cc41eda321760ae4c41459611b297ca7",
-    "url": "/whiteboard/favicon.png"
+    "revision": "f30213fcbd218e3365350c958753ead7",
+    "url": "/whiteboard/img/icon/clean.svg"
   },
   {
     "revision": "8d55ed777e25b082f9feab7708a8bbe7",
     "url": "/whiteboard/img/icon/fullscreen-exit.svg"
+  },
+  {
+    "revision": "d5a09bc5ab6f528361c55fcb29dd87aa",
+    "url": "/whiteboard/img/icon/save.svg"
+  },
+  {
+    "revision": "39153b06929a746eee884dd665ab0dc8",
+    "url": "/whiteboard/img/icon/setting.png"
   },
   {
     "revision": "01711fa464361d1f2c5994e387288432",
@@ -180,24 +188,16 @@ self.__precacheManifest = [
     "url": "/whiteboard/img/icon/list.png"
   },
   {
-    "revision": "39153b06929a746eee884dd665ab0dc8",
-    "url": "/whiteboard/img/icon/setting.png"
+    "revision": "27eb08e26528c4fa907d556fa323395d",
+    "url": "/whiteboard/img/icon/share.svg"
   },
   {
-    "revision": "d5a09bc5ab6f528361c55fcb29dd87aa",
-    "url": "/whiteboard/img/icon/save.svg"
-  },
-  {
-    "revision": "8f3082d40ef4c4f2e90c48c4f944d8af",
-    "url": "/whiteboard/db/movies/list/lastupdated/1.json.bak2"
+    "revision": "4a19317a1957d4bb21b4ecd9ca271393",
+    "url": "/whiteboard/img/icon/add-user.svg"
   },
   {
     "revision": "7de5e5f7d3fbd734c8d9328cc6806365",
     "url": "/whiteboard/img/icon/default-user.svg"
-  },
-  {
-    "revision": "990d00a9139f560eb773e2fe0819e136",
-    "url": "/whiteboard/img/icon/eraser.svg"
   },
   {
     "revision": "aa0b5ae2488f49c233cd56f727c64e15",
@@ -212,12 +212,20 @@ self.__precacheManifest = [
     "url": "/whiteboard/img/icon/downloadqueue.png"
   },
   {
-    "revision": "f30213fcbd218e3365350c958753ead7",
-    "url": "/whiteboard/img/icon/clean.svg"
+    "revision": "990d00a9139f560eb773e2fe0819e136",
+    "url": "/whiteboard/img/icon/eraser.svg"
   },
   {
     "revision": "07e14fc57877625d8ce872cf15eef912",
     "url": "/whiteboard/img/icon/add-group.png"
+  },
+  {
+    "revision": "cc41eda321760ae4c41459611b297ca7",
+    "url": "/whiteboard/favicon.png"
+  },
+  {
+    "revision": "8f3082d40ef4c4f2e90c48c4f944d8af",
+    "url": "/whiteboard/db/movies/list/lastupdated/1.json.bak2"
   },
   {
     "revision": "32b7ab1d4cfffb87627042b923affa1a",
@@ -228,11 +236,11 @@ self.__precacheManifest = [
     "url": "/whiteboard/db/movies/list/lastupdated/1.json"
   },
   {
-    "revision": "0abc17c7868238df1f40",
+    "revision": "0093a061c609788b2f87",
     "url": "/whiteboard/css/chunk-vendors.6acb9ff2.css"
   },
   {
-    "revision": "93f0d76b84c5cf8699af",
-    "url": "/whiteboard/css/app.af5360c1.css"
+    "revision": "7b92889a49bb83d3edd5",
+    "url": "/whiteboard/css/app.ebbef721.css"
   }
 ];

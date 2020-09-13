@@ -22,6 +22,7 @@ require("./serviceworker/registerServiceWorker");
 Vue.mixin({
   data: function() {
     return {
+      group:[]
     };
   }
 });

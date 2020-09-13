@@ -34,7 +34,6 @@ export default {
   //on client alert with answer
   // on connect create client event emitter
   async created() {
-    return;
     let remoteMsg = window.location.hash.slice(1);
     if (remoteMsg) {
       this.server = false;
@@ -48,23 +47,36 @@ export default {
           window.location.href.indexOf("#")
         );
       }
-    }
-    this.conn = await webRTC(remoteMsg);
-    this.conn.channel.on("canvasDraw", (m) => eventBus.$emit("canvasDraw", m));
-    this.conn.channel.on("canvasClear", (m) =>
-      eventBus.$emit("canvasClear", m)
-    );
-    if (this.conn.offer) {
-      console.log(
-        window.location +
-          "#" +
-          encodeURIComponent(JSON.stringify(this.conn.offer))
-      );
-      let ans = window.prompt('Answer');
-      if(!ans) return;
-      ans = decodeURIComponent(ans);
-      this.conn.setAnswer(JSON.parse(ans));
-    } else console.log(encodeURIComponent(JSON.stringify(this.conn.answer)));
+    } else return;
+    let conn = await webRTC(remoteMsg.offer);
+    conn.channel.on("canvasDraw", (m) => eventBus.$emit("canvasDraw", m));
+    conn.channel.on("canvasClear", (m) => eventBus.$emit("canvasClear", m));
+    let answer= encodeURIComponent(
+      JSON.stringify({ answer: conn.answer, id: remoteMsg.id })
+      )
+    console.log(conn.answer);
+    console.log(answer);
+    this.$root.group.push({
+      connection: conn,
+      id: 1,
+      answered: true,
+      profile: {},
+      offerLink:window.location.href,
+      showdetail:true,
+      answer
+    });
+    this.showpopup = true
+    // if (this.conn.offer) {
+    //   console.log(
+    //     window.location +
+    //       "#" +
+    //       encodeURIComponent(JSON.stringify(this.conn.offer))
+    //   );
+    //   let ans = window.prompt('Answer');
+    //   if(!ans) return;
+    //   ans = decodeURIComponent(ans);
+    //   this.conn.setAnswer(JSON.parse(ans));
+    // } else console.log(encodeURIComponent(JSON.stringify(this.conn.answer)));
   },
   mounted() {
     // removing preloader
@@ -78,37 +90,18 @@ export default {
   },
   methods: {
     clearDrawing() {
-      this.conn.channel.emit("canvasClear", {});
+      for (let g of this.$root.group) g.connection.channel.emit("canvasClear", {});
     },
     sendDrawing(drawing) {
-      this.conn.channel.emit("canvasDraw", drawing);
+      for (let g of this.$root.group) g.connection.channel.emit("canvasDraw", drawing);
     },
-    async createconnection() {
-      this.conn = await webRTC();
-      this.conn.channel.on("canvasDraw", (m) => {
-        eventBus.$emit("canvasDraw", m);
-      });
-      this.conn.channel.on("canvasClear", (m) => {
-        eventBus.$emit("canvasClear", m);
-      });
-
-      console.log(
-        window.location +
-          "#" +
-          encodeURIComponent(JSON.stringify(this.conn.offer))
-      );
-      let ans = window.prompt(
-        window.location +
-          "#" +
-          encodeURIComponent(JSON.stringify(this.conn.offer))
-      );
-      ans = decodeURIComponent(ans);
-      this.conn.setAnswer(JSON.parse(ans));
-      //  else console.log(encodeURIComponent(JSON.stringify(this.conn.answer)));
-    },
-    popupanswer() {},
   },
-  watch: {},
+  watch: {
+    "$root.group": {
+      deep: true,
+      handler() {},
+    },
+  },
   computed: {},
 };
 </script>
