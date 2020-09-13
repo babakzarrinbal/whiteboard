@@ -213,18 +213,23 @@ export default {
       console.log(user.offerLink);
     },
     async confirmUser(user) {
-      let ans;
-      try {
-        ans = JSON.parse(window.decodeURIComponent(user.answer));
-      } catch (e) {
-        return alert("error parsing answer");
+      try{
+        let ans;
+        try {
+          ans = JSON.parse(window.decodeURIComponent(user.answer));
+        } catch (e) {
+          return window.alert("error parsing answer");
+        }
+        let usr = this.$root.group.find((u) => u.id == ans.id);
+        if (!usr || usr.answered === true)
+          return window.alert("wrong or duplicated answer!!!");
+        usr.connection.setAnswer(ans.answer);
+        await usr.connection.connected;
+        usr.answered = true;
+
+      }catch(e){
+        window.alert(e.toString())
       }
-      let usr = this.$root.group.find((u) => u.id == ans.id);
-      if (!usr || usr.answered === true)
-        return window.alert("wrong or duplicated answer!!!");
-      usr.connection.setAnswer(ans.answer);
-      await usr.connection.connected;
-      usr.answered = true;
     },
     share(text) {
       window.navigator.share({
