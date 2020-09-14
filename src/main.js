@@ -19,22 +19,22 @@ import Vue from "vue";
 import App from "./App.vue";
 // import router from "./router";
 require("./serviceworker/registerServiceWorker");
-Vue.mixin({
-  data: function() {
-    return {
-      group:[]
-    };
-  }
-});
+// Vue.mixin({
+//   data: function() {
+//     return {
+      
+//     };
+//   }
+// });
 
 // initializing app
 Vue.config.productionTip = true;
 new Vue({
   // router,
   data: {
-    user: null,
-    showmoviedetail: false,
-    movie: {}
+    group:[],
+    mypimg: window.localStorage.getItem("wb-mypimg"),
+    mypname: window.localStorage.getItem("wb-mypname") || "no_name",
   },
   render: h => h(App)
 }).$mount("#app");

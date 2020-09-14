@@ -170,3 +170,19 @@ img {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+// bootstrap  loader
+.spinner-grow-xs{
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.spinner-grow{
+  animation: spinner-grow 0.98s linear infinite;
+
+}
+.spinner-grow.spinner-grow-1{
+  animation-delay: .20s;
+}
+.spinner-grow.spinner-grow-2{
+  animation-delay: .40s;
+}

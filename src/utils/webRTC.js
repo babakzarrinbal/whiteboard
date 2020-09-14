@@ -28,7 +28,7 @@ export default async function createCon(offer) {
           result.channel.dataChannel.send(JSON.stringify({ event, data }));
         },
       },
-      __eventListeners: {},
+      __eventListeners: { "*": () => {} },
     };
 
     const msghandler = (msg) => {
@@ -36,11 +36,12 @@ export default async function createCon(offer) {
         let jmsg = JSON.parse(msg.data);
 
         if (jmsg.candidate) {
-          result.pc
-            .addIceCandidate(jmsg.candidate)
-            .catch(console.error);
-        } else if (result.__eventListeners[jmsg.event])
+          result.pc.addIceCandidate(jmsg.candidate).catch(console.error);
+          return;
+        }
+        if (result.__eventListeners[jmsg.event])
           result.__eventListeners[jmsg.event](jmsg.data);
+        result.__eventListeners["*"](jmsg.event, jmsg.data);
       } catch (e) {
         console.error(e);
       }

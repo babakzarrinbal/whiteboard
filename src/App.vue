@@ -49,42 +49,46 @@ export default {
       }
     } else return;
     let conn = await webRTC(remoteMsg.offer);
-    conn.channel.on("canvasDraw", (m) => {
-      for(let gu of this.$root.group.filter(g=>g.id!=1))
-        gu.connection.emit('canvasDraw',m)
-      eventBus.$emit("canvasDraw", m)
-      });
-    conn.channel.on("canvasClear", (m) => {
-      for(let gu of this.$root.group.filter(g=>g.id!=1))
-        gu.connection.emit('canvasClear',m)
-      eventBus.$emit("canvasClear", m)
-      });
-    let answer= encodeURIComponent(
+    conn.channel.on("*", (ev, m) => {
+      if (ev == "profile") return;
+      eventBus.$emit(ev, m);
+      for (let gu of this.$root.group)
+        if (gu.id != 1) gu.connection.channel.emit(ev, m);
+    });
+    let answer = encodeURIComponent(
       JSON.stringify({ answer: conn.answer, id: remoteMsg.id })
-      )
-    // console.log(conn.answer);
-    // console.log(answer);
-    this.$root.group.push({
+    );
+
+    let profile = {};
+    conn.channel.on("profile", (p) => {
+      console.log("profile received");
+      profile.name = p.name;
+      profile.img = p.img;
+      this.$forceUpdate();
+    });
+
+    conn.channel.emit("profile", {
+      name: this.$root.mypname,
+      img: this.$root.mypimg,
+    });
+    let user = {
       connection: conn,
+      connecting: true,
       id: 1,
       answered: true,
-      profile: {},
-      offerLink:window.location.href,
-      showdetail:true,
-      answer
+      profile,
+      offerLink: window.location.href,
+      showdetail: true,
+      answer,
+    };
+    this.$root.group.push(user);
+    conn.connected.then(() => {
+      user.connecting = false;
+      conn.channel.dataChannel.onclose = () => {
+        this.$root.group = this.$root.group.filter((g) => g.id != 1);
+      };
     });
-    this.showpopup = true
-    // if (this.conn.offer) {
-    //   console.log(
-    //     window.location +
-    //       "#" +
-    //       encodeURIComponent(JSON.stringify(this.conn.offer))
-    //   );
-    //   let ans = window.prompt('Answer');
-    //   if(!ans) return;
-    //   ans = decodeURIComponent(ans);
-    //   this.conn.setAnswer(JSON.parse(ans));
-    // } else console.log(encodeURIComponent(JSON.stringify(this.conn.answer)));
+    this.showpopup = true;
   },
   mounted() {
     // removing preloader
@@ -98,10 +102,12 @@ export default {
   },
   methods: {
     clearDrawing() {
-      for (let g of this.$root.group) g.connection.channel.emit("canvasClear", {});
+      for (let g of this.$root.group)
+        g.connection.channel.emit("canvasClear", {});
     },
     sendDrawing(drawing) {
-      for (let g of this.$root.group) g.connection.channel.emit("canvasDraw", drawing);
+      for (let g of this.$root.group)
+        g.connection.channel.emit("canvasDraw", drawing);
     },
   },
   watch: {
