@@ -1,5 +1,6 @@
 <!-- todos
-  group draw
+  add drone seamless connections
+  resize canvas for different devices 
   save/restore with canvas resize
   group canvas aspect ratio
   on dbclick or click hold add text (or add menu)

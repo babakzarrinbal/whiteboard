@@ -17,14 +17,15 @@ export default async function createCon(offer) {
       setAnswer: (ans) =>
         result.pc.setRemoteDescription(new RTCSessionDescription(ans)),
       pc: new RTCPeerConnection(rtcConf),
-      connected: new Promise((r) => (connectionResolver = r)),
+      connected: false,
+      connectionPromise:new Promise((r) => (connectionResolver = r)),
       channel: {
         dataChannel: null,
         on: (event, callback = () => {}) => {
           if (event) result.__eventListeners[event] = callback;
         },
         emit: async (event, data) => {
-          await result.connected;
+          await result.connectionPromise;
           result.channel.dataChannel.send(JSON.stringify({ event, data }));
         },
       },
@@ -53,7 +54,8 @@ export default async function createCon(offer) {
         offered = true;
         return lastIceResolver();
       }
-      return result.connected.then(() => {
+      return result.connectionPromise.then(() => {
+        result.connected = true,
         result.channel.dataChannel.send(
           JSON.stringify({ candidate: e.candidate.toJSON() })
         );

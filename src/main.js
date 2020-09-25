@@ -33,6 +33,7 @@ new Vue({
   // router,
   data: {
     group:[],
+    client:false,
     mypimg: window.localStorage.getItem("wb-mypimg"),
     mypname: window.localStorage.getItem("wb-mypname") || "no_name",
   },

@@ -82,12 +82,14 @@ export default {
       answer,
     };
     this.$root.group.push(user);
-    conn.connected.then(() => {
+    conn.connectionPromise.then(() => {
+      conn.connected = true;
       user.connecting = false;
       conn.channel.dataChannel.onclose = () => {
         this.$root.group = this.$root.group.filter((g) => g.id != 1);
       };
     });
+    this.$root.client = true;
     this.showpopup = true;
   },
   mounted() {

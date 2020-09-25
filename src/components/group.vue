@@ -3,11 +3,20 @@
     <li class="list-group-item flex-center flex-column">
       <div
         class="my-pimg flex-center mb-1 text-dark clickable btn-raised"
-        style="height:70px;width:70px;border:1px solid black; border-radius:50%;overflow:hidden;"
-        :class="{'p-0 bg-dark':$root.mypimg,'p-2':!$root.mypimg}"
+        style="
+          height: 70px;
+          width: 70px;
+          border: 1px solid black;
+          border-radius: 50%;
+          overflow: hidden;
+        "
+        :class="{ 'p-0 bg-dark': $root.mypimg, 'p-2': !$root.mypimg }"
         @click="$refs.fileinput.click()"
       >
-        <img :src=" $root.mypimg?$root.mypimg:'img/icon/default-user.svg'" alt />
+        <img
+          :src="$root.mypimg ? $root.mypimg : 'img/icon/default-user.svg'"
+          alt
+        />
       </div>
       <input
         type="file"
@@ -18,88 +27,75 @@
       />
       <input
         type="text"
-        :style="$root.mypname.slice(0,7) ==='no_name'?'color:gray;':''"
+        :style="$root.mypname.slice(0, 7) === 'no_name' ? 'color:gray;' : ''"
         class="pname w-100"
         @change="updateName"
         v-model="$root.mypname"
       />
     </li>
+    <div
+      v-if="
+        $root.client &&
+        ($root.group[0] || {}).answered &&
+        !($root.group[0] || {}).connection.connected
+      "
+      class="offer position-relative mb-1"
+    >
+      <span
+        class="btn btn-success w-100 rounded-0"
+        @click.stop="copy($root.group[0].answer, 'Answer')"
+      >
+        Copy Answer
+      </span>
+    </div>
     <li
-      class="list-group-item list-group-item-action d-flex align-items-center clickable"
+      class="list-group-item list-group-item-action list-group-item-primary py-1 flex-center clickable"
       @click="addUser"
     >
       <div
-        class="pimg flex-center p-1"
-        style="height:40px;width:40px;border:1px solid gray; border-radius:50%;overflow-hidden"
+        class="pimg flex-center p-1 overflow-hidden border border-secondary"
+        style="height: 35px; width: 35px; border-radius: 50%"
       >
         <img src="img/icon/add-user.svg" alt />
       </div>
-      <div class="detail ml-2">ADD New User</div>
+      <!-- <div class="detail ml-2 small">ADD New User</div> -->
     </li>
+
     <li
-      class="list-group-item list-group-item-action d-flex flex-column"
-      v-for="(u,i) in $root.group"
+      class="list-group-item list-group-item-action d-flex flex-column px-0 border-right-0 border-left-0"
+      v-for="(u, i) in $root.group"
       :key="i"
     >
       <div
+        v-if="u.answered"
         class="userinfo d-flex w-100 align-items-center clickable"
         @click="u.showdetail = !u.showdetail"
       >
         <div
-          class="pimg flex-center p-1"
-          style="height:40px;width:40px;border:1px solid gray; border-radius:50%;overflow-hidden"
+          class="pimg flex-center bg-secondary border-secondary overflow-hidden rounded-circle"
+          style="height:40px;width:40px;"
         >
           <img :src="u.profile.img || 'img/icon/default-user.svg'" alt />
         </div>
         <div class="detail ml-2 flex-grow-1">
-          <span>{{u.profile.name || 'noname'}}</span>
-          <span v-if="u.connecting">
-            <span class="spinner-grow spinner-grow-xs ml-2" role="status" aria-hidden="true"></span>
-            <span
-              class="spinner-grow spinner-grow-1 spinner-grow-xs mx-1"
-              role="status"
-              aria-hidden="true"
-            ></span>
-            <span
-              class="spinner-grow spinner-grow-2 spinner-grow-xs"
-              role="status"
-              aria-hidden="true"
-            ></span>
-          </span>
-          <span class="float-right text-danger" @click.stop="removeUser(u)">X</span>
+          <span>{{ u.profile.name || "noname" }}</span>
+          <span class="float-right text-danger" @click.stop="removeUser(u)"
+            >X</span
+          >
         </div>
       </div>
-      <div class="usrdetail" v-if="!u.answered || u.showdetail">
-        <div class="my-2 offer position-relative py-2">
+
+      <div class="usrdetail" v-else>
+        <div class="offer position-relative mb-1">
           <span
-            class="p-1"
-            style="background-color:#323dff;color:white;border-radius:4px;max-width:200px;display:block;overflow-x: scroll;white-space: nowrap;"
-          >{{u.offerLink}}</span>
-          <div
-            class="share position-absolute clickable"
-            style="top:10px;right:10px;"
-            @click.stop="copy(u.offerLink)"
+            class="btn btn-primary w-100 rounded-0"
+            @click.stop="copy(u.offerLink, 'Offer link')"
           >
-            <img
-              style="width:25px;height:25px;background-color:#ffffff8c;"
-              src="img/icon/copy.svg"
-              alt
-            />
-          </div>
-          <div
-            v-if="shareEnabled"
-            class="copy position-absolute clickable"
-            style="top:10px;right:50px"
-            @click.stop="share(u.offerLink)"
-          >
-            <img
-              style="width:25px;height:25px;background-color:#ffffff8c;"
-              src="img/icon/share.svg"
-              alt
-            />
-          </div>
+            copy link
+          </span>
         </div>
-        <div class="my-2 offer position-relative py-2" v-if="u.answered">
+
+        <!-- <div class="my-2 offer position-relative py-2" v-if="u.answered">
           <span
             class="p-1"
             style="background-color:#07ce07;color:white;border-radius:4px;max-width:200px;display:block;overflow-x: scroll;white-space: nowrap;"
@@ -127,16 +123,16 @@
               alt
             />
           </div>
-        </div>
+        </div> -->
         <div v-if="!u.answered" class="answer d-flex flex-column">
           <textarea placeholder="Answer" v-model="u.answer"></textarea>
-        </div>
-        <div
-          v-if="!u.answered"
-          class="w-100 my-2 btn btn-success flex-center"
-          @click="confirmUser(u)"
-        >
-          <span>confirm</span>
+          <div
+            class="w-100 my-2 btn btn-success flex-center rounded-0"
+            @click="confirmUser(u)"
+          >
+            <span>confirm</span>
+            <growLoader v-if="u.connecting" />
+          </div>
         </div>
       </div>
     </li>
@@ -159,6 +155,7 @@
 <script>
 import webRTC from "../utils/webRTC";
 import { eventBus } from "../eventBus";
+import growLoader from "./grow-loader";
 export default {
   data() {
     return {
@@ -166,6 +163,9 @@ export default {
     };
   },
   created() {},
+  components: {
+    growLoader,
+  },
   methods: {
     async uploadimg(e) {
       this.$root.mypimg = await this.adjustImg(e.target.files[0]);
@@ -173,7 +173,7 @@ export default {
       this.$refs.fileinput.value = "";
       window.localStorage.setItem("wb-mypimg", this.$root.mypimg);
       for (let gu of this.$root.group)
-          gu.connection.channel.emit('profile', {img:this.$root.mypimg});
+        gu.connection.channel.emit("profile", { img: this.$root.mypimg });
     },
     adjustImg(file) {
       return new Promise((resolve) => {
@@ -211,7 +211,7 @@ export default {
     updateName() {
       window.localStorage.setItem("wb-mypname", this.$root.mypname);
       for (let gu of this.$root.group)
-          gu.connection.channel.emit('profile', {name:this.$root.mypname});
+        gu.connection.channel.emit("profile", { name: this.$root.mypname });
     },
     async addUser() {
       let connection = await webRTC();
@@ -228,8 +228,8 @@ export default {
       };
       let profile = {};
       connection.channel.on("profile", (p) => {
-        if(p.name) profile.name = p.name;
-        if(p.img) profile.img = p.img;
+        if (p.name) profile.name = p.name;
+        if (p.img) profile.img = p.img;
         this.$forceUpdate();
       });
       connection.channel.emit("profile", {
@@ -239,7 +239,7 @@ export default {
       let user = {
         connection,
         id,
-        connecting: true,
+        connecting: false,
         answered: false,
         profile,
         answer: "",
@@ -249,9 +249,6 @@ export default {
           "#" +
           encodeURIComponent(JSON.stringify({ offer: connection.offer, id })),
       };
-      connection.connected.then(() => {
-        user.connecting = false;
-      });
       this.$root.group.push(user);
     },
     async confirmUser(user) {
@@ -265,8 +262,10 @@ export default {
       console.log(usr.id);
       if (!usr || usr.answered === true)
         return window.alert("wrong or duplicated answer!!!");
+      user.connecting = true;
       usr.connection.setAnswer(ans.answer);
-      await usr.connection.connected;
+      await usr.connection.connectionPromise;
+      user.connecting = false;
       console.log("added");
       usr.answered = true;
     },
@@ -282,7 +281,7 @@ export default {
         files: null,
       });
     },
-    copy(text) {
+    copy(text, title) {
       if (!text) return;
       const el = document.createElement("textarea");
       el.value = text;
@@ -290,7 +289,7 @@ export default {
       el.select();
       document.execCommand("copy");
       document.body.removeChild(el);
-      alert("Text copied to clipboard!!!");
+      alert(title + " copied to clipboard!!!");
     },
   },
   watch: {
