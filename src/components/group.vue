@@ -79,7 +79,7 @@
         </div>
         <div class="detail ml-2 flex-grow-1">
           <span>{{ u.profile.name || "noname" }}</span>
-          <span class="float-right text-danger" @click.stop="removeUser(u)"
+          <span class="float-right text-danger px-2 font-weight-bold" @click.stop="removeUser(u)"
             >X</span
           >
         </div>
@@ -154,7 +154,6 @@
 </style>
 <script>
 import webRTC from "../utils/webRTC";
-import { eventBus } from "../eventBus";
 import growLoader from "./grow-loader";
 export default {
   data() {
@@ -219,7 +218,7 @@ export default {
         this.$root.group.reduce((cu, c) => (cu > c.id ? cu : c.id), 0) + 1;
       connection.channel.on("*", (ev, m) => {
         if (ev == "profile") return;
-        eventBus.$emit(ev, m);
+        this.event.emit(ev, m);
         for (let gu of this.$root.group)
           if (gu.id != id) gu.connection.channel.emit(ev, m);
       });
@@ -245,7 +244,7 @@ export default {
         answer: "",
         showdetail: false,
         offerLink:
-          window.location +
+          window.location.href.slice(0,window.location.href.indexOf("#")) +
           "#" +
           encodeURIComponent(JSON.stringify({ offer: connection.offer, id })),
       };
@@ -259,14 +258,12 @@ export default {
         return window.alert("error parsing answer");
       }
       let usr = this.$root.group.find((u) => u.id == ans.id);
-      console.log(usr.id);
       if (!usr || usr.answered === true)
         return window.alert("wrong or duplicated answer!!!");
       user.connecting = true;
       usr.connection.setAnswer(ans.answer);
       await usr.connection.connectionPromise;
       user.connecting = false;
-      console.log("added");
       usr.answered = true;
     },
     removeUser(user) {

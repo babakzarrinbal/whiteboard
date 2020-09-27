@@ -1,22 +1,35 @@
 export default class EventEmitter {
   constructor() {
-    this.callbacks = new Map();
+    this.callbacks = {};
   }
 
   on(events, cb) {
     events = Array.isArray(events) ? events : [events];
-    for (let ev of events) this.callbacks.set(ev, cb);
+    for (let ev of events)
+      this.callbacks[ev.toString()] = {
+        cb: cb,
+        type: ev instanceof RegExp ? RegExp : String,
+      };
   }
 
   emit(events, data) {
     events = Array.isArray(events) ? events : [events];
     let runningCallback = new Set();
     for (let ev of events) {
-      for (let cbk of this.callbacks.keys) {
-        if ((cbk instanceof RegExp && cbk.exec(ev)) || cbk === ev)
-          runningCallback.add(cbk);
+      for (let listenerkey in this.callbacks) {
+        let listener  = this.callbacks[listenerkey]
+        let regex =
+          listener.type === RegExp
+            ? new RegExp(
+                listenerkey.slice(1, listenerkey.lastIndexOf("/")),
+                listenerkey.slice(listenerkey.lastIndexOf("/") + 1)
+              )
+            : null;
+        if ((regex && regex.exec(ev)) || listenerkey === ev)
+          runningCallback.add(listenerkey);
       }
     }
-    for(let cb of runningCallback) this.callbacks.get(cb)(data);
+    for (let listener of runningCallback) {
+      this.callbacks[listener].cb(data);}
   }
 }

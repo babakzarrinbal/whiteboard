@@ -19,18 +19,21 @@ import Vue from "vue";
 import App from "./App.vue";
 // import router from "./router";
 require("./serviceworker/registerServiceWorker");
-// Vue.mixin({
-//   data: function() {
-//     return {
-      
-//     };
-//   }
-// });
+import eventEmitter from "./utils/EventEmitter"
+const event =  new eventEmitter;
+Vue.mixin({
+  data: function() {
+    return {
+      event,
+    };
+  }
+});
 
 // initializing app
 Vue.config.productionTip = true;
 new Vue({
   // router,
+  
   data: {
     group:[],
     client:false,

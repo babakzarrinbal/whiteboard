@@ -14,7 +14,6 @@
 import whiteboard from "./views/whiteBoard";
 import popup from "./components/popup";
 import webRTC from "./utils/webRTC";
-import { eventBus } from "./eventBus";
 export default {
   data() {
     return {
@@ -34,24 +33,27 @@ export default {
   //on client alert with answer
   // on connect create client event emitter
   async created() {
+    // this.event.emit('test',"test")
     let remoteMsg = window.location.hash.slice(1);
+    window.location.hash = "";
     if (remoteMsg) {
       this.server = false;
       try {
         remoteMsg = JSON.parse(decodeURIComponent(remoteMsg));
       } catch (e) {
-        console.error(e);
-        alert("provided link is now correct!!!");
-        window.location = window.location.href.slice(
-          0,
-          window.location.href.indexOf("#")
-        );
+        console.error(e,decodeURIComponent(remoteMsg));
+
+        // alert("provided link is not correct!!!");
+        // window.location = window.location.href.slice(
+        //   0,
+        //   window.location.href.indexOf("#")
+        // );
       }
     } else return;
     let conn = await webRTC(remoteMsg.offer);
     conn.channel.on("*", (ev, m) => {
       if (ev == "profile") return;
-      eventBus.$emit(ev, m);
+      this.event.emit(ev, m);
       for (let gu of this.$root.group)
         if (gu.id != 1) gu.connection.channel.emit(ev, m);
     });
@@ -61,7 +63,6 @@ export default {
 
     let profile = {};
     conn.channel.on("profile", (p) => {
-      console.log("profile received");
       profile.name = p.name;
       profile.img = p.img;
       this.$forceUpdate();

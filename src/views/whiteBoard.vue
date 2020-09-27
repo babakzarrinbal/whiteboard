@@ -148,7 +148,6 @@ input[type="color"]::-webkit-color-swatch {
 </style>
 <script>
 import h2c from "html2canvas/dist/html2canvas";
-import { eventBus } from "../eventBus";
 // import settingsVue from '../components/settings.vue';
 // import {Sketch} from "vue-color";
 window.h2c = h2c;
@@ -178,8 +177,8 @@ export default {
     this.canvas = this.$refs.cbook;
     this.context = this.canvas.getContext("2d");
     this.initDrawing();
-    eventBus.$on("canvasDraw", this.drawRemoteLines);
-    eventBus.$on("canvasClear", () => this.clearCanvas(true));
+    this.event.on("canvasDraw", this.drawRemoteLines);
+    this.event.on("canvasClear", () => this.clearCanvas(true));
   },
   methods: {
     initDrawing() {
