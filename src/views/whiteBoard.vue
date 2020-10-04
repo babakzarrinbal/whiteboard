@@ -270,7 +270,7 @@ export default {
           delete this.cb_lastPoints[t.identifier];
           if (!lasttouch){
             this.drawLine(p.x,p.y,p.x,p.y);
-             this.applyDrawing([p.x, p.y, p.x, p.y]);}
+             this.applyDrawing([[p.x, p.y, p.x, p.y]]);}
         }
       } else {
         let p = this.getCoords(e);
@@ -279,7 +279,7 @@ export default {
           p.y === this.cb_lastPoints[0].y
         ) {
           this.drawLine(p.x,p.y,p.x,p.y)
-          this.applyDrawing([p.x, p.y, p.x, p.y]);
+          this.applyDrawing([[p.x, p.y, p.x, p.y]]);
         }
       }
       e.preventDefault();
