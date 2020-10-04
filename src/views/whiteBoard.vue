@@ -12,7 +12,13 @@
 <template>
   <div
     ref="container"
-    style="position:relative;width:100%;height:100%;background-color:white;overflow:hidden;"
+    style="
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      overflow: hidden;
+    "
   >
     <!-- <div
       contenteditable="true"
@@ -21,51 +27,86 @@
     >sampletext</div>-->
     <div
       class="canvascontainer"
-      style="position:relative;width:vw;height:vh;background-color:white;"
+      style="position: relative; width: vw; height: vh; background-color: white"
     >
       <canvas
         ref="cbook"
         :width="can_width"
         :height="can_height"
-        style="position: relative;"
-        :style="eraser?'cursor: no-drop;':''"
+        style="position: relative"
+        :style="eraser ? 'cursor: no-drop;' : ''"
       >
-        <!-- @dblclick="console.log('test')" -->
         <strong>[Your browser can not show this example.]</strong>
       </canvas>
     </div>
     <div
       class="settings"
-      style="border:1px solid black;padding:8px;background-color:rgb(63 117 255);width:40px;height:40px;border-radius:50%;position:absolute;left:10px;bottom:10px;display:flex;cursor:pointer;user-select:none;justify-content:center;align-items:center;"
+      style="
+        border: 1px solid black;
+        padding: 8px;
+        background-color: rgb(63 117 255);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        position: absolute;
+        left: 10px;
+        bottom: 10px;
+        display: flex;
+        cursor: pointer;
+        user-select: none;
+        justify-content: center;
+        align-items: center;
+      "
       v-if="!capturing"
       @click="settingVisible = !settingVisible"
-      :style="'background-color:'+strokeStyle"
+      :style="'background-color:' + strokeStyle"
     >
       <img src="img/icon/draw.svg" at />
     </div>
     <div
       v-if="!capturing && settingVisible"
       class="controls"
-      style="position:absolute;left:70px;bottom:0px;display:flex;flex-direction:column;justify-content:center;align-items:center"
+      style="
+        position: absolute;
+        left: 70px;
+        bottom: 0px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      "
     >
       <div
         class="tips"
-        style="width:100%;display:flex;flex-direction:row-reverse;justify-content:space-between;"
+        style="
+          width: 100%;
+          display: flex;
+          flex-direction: row-reverse;
+          justify-content: space-between;
+        "
       >
         <div>
           <input
             type="color"
             v-model="strokeStyle"
-            style="min-width:5px;min-height:5px;padding:0;border-radius:50%;overflow:hidden;border:1px solid black;margin-right:5px;"
-            :style="{width:lineWidth+'px',height:lineWidth+'px'}"
+            style="
+              min-width: 5px;
+              min-height: 5px;
+              padding: 0;
+              border-radius: 50%;
+              overflow: hidden;
+              border: 1px solid black;
+              margin-right: 5px;
+            "
+            :style="{ width: lineWidth + 'px', height: lineWidth + 'px' }"
             :disabled="eraser"
           />
         </div>
-        <div class="eraser" style="display:flex" @click="eraser=!eraser">
+        <div class="eraser" style="display: flex" @click="eraser = !eraser">
           <div
             class="button clickable btn-raised"
-            :class="{'active':eraser}"
-            style="transition:0s;margin-top:auto;width:30px;height:30px"
+            :class="{ active: eraser }"
+            style="transition: 0s; margin-top: auto; width: 30px; height: 30px"
           >
             <img src="img/icon/eraser.svg" />
           </div>
@@ -80,25 +121,42 @@
         min="1"
         max="50"
         v-model="rangeVal"
-        style="min-width:200px;width:25vw;height:5vw;"
+        style="min-width: 200px; width: 25vw; height: 5vw"
       />
     </div>
     <div
       v-if="!capturing && settingVisible"
       class="controls"
-      style="position:absolute;left:10px;bottom:50px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start"
+      style="
+        position: absolute;
+        left: 10px;
+        bottom: 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+      "
     >
-      <div class="button clickable btn-raised" @click="$emit('show-group')" style="padding:8px;">
+      <div
+        class="button clickable btn-raised"
+        @click="$emit('show-group')"
+        style="padding: 8px"
+      >
         <img src="img/icon/add-group.png" class alt />
       </div>
       <div class="button clickable btn-raised" style>
         <img src="img/icon/clean.svg" @click="clearCanvas(false)" class alt />
       </div>
-      <div class="button clickable btn-raised" style="padding:8px;">
+      <div class="button clickable btn-raised" style="padding: 8px">
         <img src="img/icon/save.svg" @click="save" class alt />
       </div>
-      <div class="button clickable btn-raised" style="padding:8px;">
-        <img :src="'img/icon/fullscreen-'+(isFullscreen?'exit':'enter')+'.svg'" @click="fullscreen" />
+      <div class="button clickable btn-raised" style="padding: 8px">
+        <img
+          :src="
+            'img/icon/fullscreen-' + (isFullscreen ? 'exit' : 'enter') + '.svg'
+          "
+          @click="fullscreen"
+        />
       </div>
     </div>
   </div>
@@ -169,7 +227,6 @@ export default {
       backColor: "rgb(255,255,255)",
       eraser: false,
       capturing: false,
-      console: window.console,
     };
   },
   // components:{Sketch},
@@ -184,30 +241,47 @@ export default {
     initDrawing() {
       this.can_height = window.screen.height;
       this.can_width = window.screen.width;
-      this.context.beginPath();
+      // this.context.beginPath();
 
       this.canvas.onmousedown = this.startDraw;
       this.canvas.onmouseup = this.stopDraw;
-      this.canvas.ontouchstart = this.startDraw;
-      this.canvas.ontouchstop = this.stopDraw;
+      // this.canvas.ontouchstart = this.startDraw;
+      this.canvas.ontouchend = this.stopDraw;
       this.canvas.ontouchmove = this.drawMouse;
     },
     startDraw(e) {
-      if (e.touches) {
-        // Touch event
-        for (var i = 1; i <= e.touches.length; i++) {
-          let p = this.getCoords(e.touches[i - 1]);
-          this.cb_lastPoints[e.touches[i - 1].identifier] = p; // Get info for finger #1
-        }
-      } else {
-        // Mouse event
-        let p = this.getCoords(e);
-        this.cb_lastPoints[0] = p;
-        this.canvas.onmousemove = this.drawMouse;
-      }
+      // if (e.touches) {
+      //   // for (var i = 1; i <= e.touches.length; i++)
+      //   //   this.cb_lastPoints[e.touches[i - 1].identifier] = this.getCoords(
+      //   //     e.touches[i - 1]
+      //   //   );
+      // } else {
+
+      this.cb_lastPoints[0] = this.getCoords(e);
+      this.canvas.onmousemove = this.drawMouse;
+      // }
       return false;
     },
     stopDraw(e) {
+      if (e.changedTouches) {
+        for (let t of e.changedTouches) {
+          let p = this.getCoords(t);
+          let lasttouch = this.cb_lastPoints[t.identifier];
+          delete this.cb_lastPoints[t.identifier];
+          if (!lasttouch){
+            this.drawLine(p.x,p.y,p.x,p.y);
+             this.applyDrawing([p.x, p.y, p.x, p.y]);}
+        }
+      } else {
+        let p = this.getCoords(e);
+        if (
+          this.cb_lastPoints[0].x === p.x &&
+          p.y === this.cb_lastPoints[0].y
+        ) {
+          this.drawLine(p.x,p.y,p.x,p.y)
+          this.applyDrawing([p.x, p.y, p.x, p.y]);
+        }
+      }
       e.preventDefault();
       this.canvas.onmousemove = null;
     },
@@ -215,22 +289,28 @@ export default {
       let p;
       let lineCoords = [];
       if (e.touches) {
-        // Touch Enabled
-        for (var i = 1; i <= e.touches.length; i++) {
-          p = this.getCoords(e.touches[i - 1]); // Get info for finger i
+        for (let i = 0; i < e.touches.length; i++) {
+          let touch = e.touches[i];
+          let tid = touch.identifier;
+          if (!this.cb_lastPoints[tid]) {
+            let orgtouch;
+            for (let ort of e.changedTouches) {
+              if (ort.identifier === tid) orgtouch = ort;
+            }
+            this.cb_lastPoints[tid] = this.getCoords(orgtouch);
+          }
+          p = this.getCoords(touch);
           let linecoord = [
-            this.cb_lastPoints[e.touches[i - 1].identifier].x,
-            this.cb_lastPoints[e.touches[i - 1].identifier].y,
+            this.cb_lastPoints[tid].x,
+            this.cb_lastPoints[tid].y,
             p.x,
             p.y,
           ];
-          this.cb_lastPoints[e.touches[i - 1].identifier] = this.drawLine(
-            ...linecoord
-          );
+          this.cb_lastPoints[tid] = this.drawLine(...linecoord);
+          // this.cb_lastPoints[touch.identifier].drawed=true;
           lineCoords.push(linecoord);
         }
       } else {
-        // Not touch enabled
         p = this.getCoords(e);
         let linecoord = [
           this.cb_lastPoints[0].x,
@@ -242,6 +322,11 @@ export default {
         this.cb_lastPoints[0] = this.drawLine(...linecoord);
       }
 
+      this.applyDrawing(lineCoords);
+
+      return false;
+    },
+    applyDrawing(lineCoords) {
       this.context.lineWidth = this.lineWidth;
       this.context.strokeStyle = this.eraser
         ? this.backColor
@@ -250,6 +335,8 @@ export default {
       if (this.strokeStyle.a && this.strokeStyle.a < 1)
         this.context.globalCompositeOperation = "xor";
       this.context.stroke();
+      this.context.closePath();
+      this.context.beginPath();
       this.$emit("draw", {
         type: "drawLine",
         coords: lineCoords,
@@ -257,9 +344,6 @@ export default {
         strokeStyle: this.context.strokeStyle,
         lineWidth: this.context.lineWidth,
       });
-      this.context.closePath();
-      this.context.beginPath();
-      return false;
     },
     drawLine(sX, sY, eX, eY) {
       this.context.moveTo(sX, sY);
@@ -330,9 +414,6 @@ export default {
       deep: true,
       handler() {},
     },
-    // strokeStyle(val) {
-    //   // console.log(val);
-    // },
   },
 };
 </script>
